@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const fetch = (...args) =>
 	import('node-fetch').then(({ default: fetch }) => fetch(...args))
@@ -6,8 +7,8 @@ const app = express()
 app.use(express.json())
 app.use(express.static('.'))
 
-const TOKEN = 'PLACEHOLDER_TOKEN'
-const CHAT_ID = 'PLACEHOLDER_CHAT_ID'
+const TOKEN = process.env.TELEGRAM_TOKEN
+const CHAT_ID = process.env.TELEGRAM_CHAT_ID
 
 app.post('/api/send', async (req, res) => {
 	try {
