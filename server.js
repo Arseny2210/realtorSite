@@ -1,11 +1,13 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+	require('dotenv').config()
+}
 const express = require('express')
 const fetch = (...args) =>
 	import('node-fetch').then(({ default: fetch }) => fetch(...args))
 
 const app = express()
 app.use(express.json())
-app.use(express.static('.'))
+app.use(express.static(__dirname))
 
 const TOKEN = process.env.TELEGRAM_TOKEN
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID
@@ -48,6 +50,10 @@ app.post('/api/send', async (req, res) => {
 	}
 })
 
-app.listen(3000, () => {
-	console.log('🚀 http://localhost:3000')
-})
+module.exports = app
+
+if (require.main === module) {
+	app.listen(3000, () => {
+		console.log('🚀 http://localhost:3000')
+	})
+}
